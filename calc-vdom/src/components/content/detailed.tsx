@@ -60,8 +60,8 @@ export default function DetailedResults({
 
     monthByMonthData.push({
       Month: month,
-      "Total Monthly Cost": formatCurrency(totalMonthlyCost),
       "Monthly Storage": `${monthlyStorage.toFixed(2)} GB`,
+      "Total Monthly Cost": formatCurrency(totalMonthlyCost),
     });
   }
 
@@ -73,7 +73,7 @@ export default function DetailedResults({
   // Wrap the ListDataProviderView in a RowDataGridProvider
   const dataGridProvider = new RowDataGridProvider(arrayDataProvider, {
     columnHeaders: {
-      column: ["Month", "Total Monthly Cost", "Monthly Storage"], // Define the column headers
+      column: ["Month", "Monthly Storage", "Total Monthly Cost" ], // Define the column headers
     },
   });
 
@@ -88,7 +88,8 @@ export default function DetailedResults({
           <h3>Backup Plan:</h3>
           {backupPlan.length > 0 ? (
             <>
-              <ul>
+            <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-center">
+            <ul>
                 {backupPlan.map((backup, index) => (
                   <li key={index}>
                     Schedule: {backup.scheduleId}, Retention:{" "}
@@ -100,9 +101,22 @@ export default function DetailedResults({
               <oj-data-grid
                 data={dataGridProvider}
                 style={{ height: "400px", width: "100%" }}
-                class="oj-sm-margin-2x"
+                class="oj-flex-item oj-sm-flex-grow-1 oj-md-12"
+                header={{
+                  column: {
+                    style: (context) => {
+                      if(context.index > 0 ){ // Increase width of the columns, except month
+                        return 'width: 180px;'
+                      }
+                    },
+                    resizable: {
+                      width: 'enable', // Enable column width resizing
+                    }
+                  },
+                }}
               >
               </oj-data-grid>
+            </div>
             </>
           ) : (
             <p>No backup plans added yet.</p>

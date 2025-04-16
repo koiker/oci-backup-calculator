@@ -32,7 +32,6 @@ export default function Summary({
       totalSize // Pass the totalSize as the initial backup size
     );
     const resp = calculateTotalCost(backupInfo, totalMonths, increase / 100); // Convert percentage to decimal
-    console.log(resp);
     return resp;
   });
 
