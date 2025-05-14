@@ -1,6 +1,6 @@
 import { BackupInfo, calculateTotalCost } from "../engine";
 import { DataGridElement } from "ojs/ojdatagrid";
-import {DataGridProvider} from "ojs/ojdatagridprovider";
+import { DataGridProvider } from "ojs/ojdatagridprovider";
 import "ojs/ojdatagrid";
 import "ojs/ojarraydataprovider";
 import "ojs/ojlistdataproviderview";
@@ -49,10 +49,7 @@ export default function DetailedResults({
       return parseFloat(result.monthlyCosts[month - 1]); // Convert string to number
     });
 
-    const totalMonthlyCost = monthlyCosts.reduce(
-      (sum, cost) => sum + cost,
-      0
-    );
+    const totalMonthlyCost = monthlyCosts.reduce((sum, cost) => sum + cost, 0);
 
     const monthlyStorage = detailedResults.reduce((sum, result) => {
       return sum + parseFloat(result.monthlyStorageSizes[month - 1]); // Use the monthlyStorageSizes array
@@ -73,7 +70,7 @@ export default function DetailedResults({
   // Wrap the ListDataProviderView in a RowDataGridProvider
   const dataGridProvider = new RowDataGridProvider(arrayDataProvider, {
     columnHeaders: {
-      column: ["Month", "Monthly Storage", "Total Monthly Cost" ], // Define the column headers
+      column: ["Month", "Monthly Storage", "Total Monthly Cost"], // Define the column headers
     },
   });
 
@@ -88,35 +85,35 @@ export default function DetailedResults({
           <h3>Backup Plan:</h3>
           {backupPlan.length > 0 ? (
             <>
-            <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-center">
-            <ul>
-                {backupPlan.map((backup, index) => (
-                  <li key={index}>
-                    Schedule: {backup.scheduleId}, Retention:{" "}
-                    {backup.retention}, Tier: {backup.storageTier}
-                  </li>
-                ))}
-              </ul>
-              <h3>Month-by-Month Breakdown:</h3>
-              <oj-data-grid
-                data={dataGridProvider}
-                style={{ height: "400px", width: "100%" }}
-                class="oj-flex-item oj-sm-flex-grow-1 oj-md-12"
-                header={{
-                  column: {
-                    style: (context) => {
-                      if(context.index > 0 ){ // Increase width of the columns, except month
-                        return 'width: 180px;'
-                      }
+              <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-center">
+                <ul>
+                  {backupPlan.map((backup, index) => (
+                    <li key={index}>
+                      Schedule: {backup.scheduleId}, Retention:{" "}
+                      {backup.retention}, Tier: {backup.storageTier}
+                    </li>
+                  ))}
+                </ul>
+                <h3>Month-by-Month Breakdown:</h3>
+                <oj-data-grid
+                  data={dataGridProvider}
+                  style={{ height: "400px", width: "100%" }}
+                  class="oj-flex-item oj-sm-flex-grow-1 oj-md-12"
+                  header={{
+                    column: {
+                      style: (context) => {
+                        if (context.index > 0) {
+                          // Increase width of the columns, except month
+                          return "width: 180px;";
+                        }
+                      },
+                      resizable: {
+                        width: "enable", // Enable column width resizing
+                      },
                     },
-                    resizable: {
-                      width: 'enable', // Enable column width resizing
-                    }
-                  },
-                }}
-              >
-              </oj-data-grid>
-            </div>
+                  }}
+                ></oj-data-grid>
+              </div>
             </>
           ) : (
             <p>No backup plans added yet.</p>
